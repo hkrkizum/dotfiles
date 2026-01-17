@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# pre-commit hook: シークレットと.envファイルのチェック
+#
+
+# 比較対象の決定
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    against=HEAD
+else
+    against=$(git hash-object -t tree /dev/null)
+fi
+
+exec 1>&2
+
+# ステージされたファイル一覧を取得
+staged_files=$(git diff-index --cached --name-only --diff-filter=ACM $against)
+
+if [ -z "$staged_files" ]; then
+    exit 0
+fi
+
+error_found=0
+
+# 1. .envファイルのチェック
+for file in $staged_files; do
+    case "$file" in
+        .env|.env.*|*.env)
+            echo "ERROR: .envファイルはコミットできない: $file"
+            error_found=1
+            ;;
+    esac
+done
+
+# 2. シークレットパターンのチェック
+secret_patterns='(password|passwd|pwd|secret|api_key|apikey|api-key|token|access_token|auth_token|private_key|credentials)\s*[=:]\s*["\x27]?[^\s"\x27]{8,}'
+
+for file in $staged_files; do
+    # バイナリファイルはスキップ
+    if file "$file" 2>/dev/null | grep -q "binary"; then
+        continue
+    fi
+
+    # ファイルが存在する場合のみチェック
+    if [ -f "$file" ]; then
+        matches=$(git show ":$file" 2>/dev/null | grep -inE "$secret_patterns" || true)
+        if [ -n "$matches" ]; then
+            echo "WARNING: シークレットの可能性あり: $file"
+            echo "$matches"
+            echo ""
+            error_found=1
+        fi
+    fi
+done
+
+if [ $error_found -ne 0 ]; then
+    echo ""
+    echo "コミットを中止した。"
+    echo "意図的にコミットする場合は git commit --no-verify を使用すること。"
+    exit 1
+fi
+
+exit 0
