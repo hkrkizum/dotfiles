@@ -100,7 +100,7 @@ Windows PowerShell (`powershell.exe`) と PowerShell Core (`pwsh.exe`) の両方
 #### 3.3.1. 方法 1: シンボリックリンク
 
 ```powershell
-$Target = "$PWD\Microsoft.PowerShell_profile.ps1"
+$Target = "$PWD\PowerShell\Microsoft.PowerShell_profile.ps1"
 $Links = @(
     "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1",
     "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
@@ -110,10 +110,6 @@ foreach ($Link in $Links) {
     if (!(Test-Path (Split-Path $Link))) { New-Item -Type Directory -Path (Split-Path $Link) -Force }
     New-Item -ItemType SymbolicLink -Path $Link -Target $Target -Force
 }
-
-New-Item -ItemType SymbolicLink -Path "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1" -Target "$PWD\Microsoft.PowerShell_profile.ps1" -Force
-
-New-Item -ItemType SymbolicLink -Path "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" -Target "$PWD\Microsoft.PowerShell_profile.ps1" -Force
 ```
 
 #### 3.3.2. 方法 2: ハードリンク

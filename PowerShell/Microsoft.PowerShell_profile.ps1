@@ -7,7 +7,8 @@ $omp_shell = if ($PSVersionTable.PSVersion.Major -ge 7) { "pwsh" } else { "power
 # oh-my-poshの初期化 (判定したシェル名を渡す)
 # ※エラーが出る場合は --config でテーマファイルを明示的に指定してみてください
 if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
-    oh-my-posh init $omp_shell | Invoke-Expression
+    oh-my-posh init $omp_shell --config ~/dotfiles/PowerShell/mytheme.json | Invoke-Expression
+    Import-Module posh-git
 }
 
 # pixiの補完スクリプトの読み込み
