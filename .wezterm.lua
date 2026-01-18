@@ -8,14 +8,15 @@ local config = wezterm.config_builder()
 local act = wezterm.action
 
 -- This is where you actually apply your config choices.
-
 config.window_close_confirmation = 'AlwaysPrompt'
 
 -- Font settings. ------------------------------------------------
+config.use_ime = true
+
 config.font_size = 12
-config.font = wezterm.font("MesloLGS Nerd Font")
+config.font = wezterm.font("MesloLGM Nerd Font")
 config.font = wezterm.font_with_fallback({
-	"MesloLGS Nerd Font",
+	"MesloLGM Nerd Font",
 })
 
 -- GUI settings. ------------------------------------------------
