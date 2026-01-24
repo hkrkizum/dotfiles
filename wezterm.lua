@@ -84,6 +84,13 @@ config.keys = {
       end
     end),
   },
+
+  -- 3. Claude codeでShift+Enterで改行を送信
+  {
+    key = 'Enter',
+    mods = 'SHIFT',
+    action = wezterm.action.SendString('\n')
+  },
 }
 
 -- Finally, return the configuration to wezterm:
