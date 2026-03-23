@@ -1,5 +1,5 @@
 -- Pull in the wezterm API
-local wezterm = require 'wezterm'
+local wezterm = require("wezterm")
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -8,7 +8,8 @@ local config = wezterm.config_builder()
 local act = wezterm.action
 
 -- This is where you actually apply your config choices.
-config.window_close_confirmation = 'AlwaysPrompt'
+config.automatically_reload_config = true
+config.window_close_confirmation = "AlwaysPrompt"
 
 -- Automatically reload the configuration when it changes
 config.automatically_reload_config = true
@@ -26,22 +27,26 @@ config.initial_rows = 32
 config.window_decorations = "RESIZE"
 
 wezterm.on("gui-startup", function(cmd)
-    local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
-    window:gui_window():set_position(50, 100)
-    -- window:gui_window():set_position(1400, 1000)
-    -- window:gui_window():set_inner_size(5000, 2500)
-    -- window:gui_window():set_inner_size(2000, 1000)
-    -- pane:split({ size = 0.95, direction = "Top" })
-    -- pane:split({ size = 0.5, direction = "Left" })
+	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+	window:gui_window():set_position(50, 100)
+	-- window:gui_window():set_position(1400, 1000)
+	-- window:gui_window():set_inner_size(5000, 2500)
+	-- window:gui_window():set_inner_size(2000, 1000)
+	-- pane:split({ size = 0.95, direction = "Top" })
+	-- pane:split({ size = 0.5, direction = "Left" })
 end)
 
 -- or, changing the font size and color scheme.
-config.color_scheme = 'Vs Code Dark+ (Gogh)'
+config.color_scheme = "Vs Code Dark+ (Gogh)"
 
+-- Background settings.
+config.window_background_opacity = 0.90
+config.macos_window_background_blur = 20
+config.window_decorations = "RESIZE"
 
 -- 1. デフォルトのシェル（+ボタンや起動時）を PowerShell に設定
 -- (PowerShell 7なら 'pwsh.exe'、Windows標準なら 'powershell.exe')
-config.default_prog = { 'pwsh.exe', '-NoLogo' }
+config.default_prog = { "pwsh.exe", "-NoLogo" }
 
 -- 2. ランチャーメニューに表示するリストを定義
 config.launch_menu = {
