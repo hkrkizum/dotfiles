@@ -93,7 +93,44 @@ config.keys = {
         mods = 'SHIFT',
         action = wezterm.action.SendString('\n')
     },
+    
+    -- 4. 分割ペインのショートカット
+    {
+        key = 'h',
+        mods = 'CTRL|SHIFT',
+        action = act.SplitHorizontal { domain = 'CurrentPaneDomain' },
+    },
+    {
+        key = 'v',
+        mods = 'CTRL|SHIFT',
+        action = act.SplitVertical { domain = 'CurrentPaneDomain' },
+    },
+    {
+        key = 't',
+        mods = 'CTRL|SHIFT',
+        action = act.CloseCurrentPane { confirm = true },
+    },
+    {
+        key = ']',
+        mods = 'CTRL',
+        action = act.PaneSelect,
+    },
 }
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
+    local has_unseen_output = false
+    for _, pane in ipairs(tab.panes) do
+        if pane.has_unseen_output then
+            has_unseen_output = true
+            break
+        end
+    end
+    local title = tab.active_pane.title
+    if has_unseen_output then
+        title = title .. " 💡"
+    end
+    return title
+end)
 
 -- Finally, return the configuration to wezterm:
 return config
