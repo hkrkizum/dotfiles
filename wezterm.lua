@@ -40,8 +40,8 @@ end)
 config.color_scheme = "Vs Code Dark+ (Gogh)"
 
 -- Background settings.
-config.window_background_opacity = 0.90
-config.macos_window_background_blur = 20
+config.window_background_opacity = 1.0
+config.macos_window_background_blur = 10
 config.window_decorations = "RESIZE"
 
 -- 1. デフォルトのシェル（+ボタンや起動時）を PowerShell に設定
